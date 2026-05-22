@@ -11,9 +11,9 @@
       background: #f0f4f8;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
-      padding: 20px;
+      padding: 30px 20px;
     }
     .card {
       background: white;
@@ -21,34 +21,78 @@
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       width: 100%;
-      max-width: 480px;
-      text-align: center;
+      max-width: 580px;
     }
+    h1 { font-size: 20px; color: #1a202c; margin-bottom: 20px; }
     .result-badge {
-      font-size: 48px;
+      font-size: 52px;
       font-weight: bold;
-      margin: 20px 0 10px;
+      text-align: center;
+      margin: 10px 0;
     }
     .pass { color: #38a169; }
     .fail { color: #e53e3e; }
     .confidence {
-      font-size: 18px;
+      text-align: center;
+      font-size: 16px;
       color: #718096;
-      margin-bottom: 30px;
+      margin-bottom: 24px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      text-align: left;
       font-size: 14px;
       margin-bottom: 28px;
     }
     th, td {
       padding: 8px 12px;
       border-bottom: 1px solid #e2e8f0;
+      text-align: left;
     }
     th { color: #4a5568; font-weight: bold; }
     td { color: #2d3748; }
+
+    .suggestions-title {
+      font-size: 17px;
+      font-weight: bold;
+      color: #c53030;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #feb2b2;
+    }
+    .suggestion-card {
+      background: #fff5f5;
+      border-left: 4px solid #e53e3e;
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    .suggestion-field {
+      font-weight: bold;
+      color: #c53030;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .suggestion-meta {
+      font-size: 12px;
+      color: #718096;
+      margin-bottom: 6px;
+    }
+    .suggestion-advice {
+      font-size: 13px;
+      color: #2d3748;
+      line-height: 1.5;
+    }
+    .pass-message {
+      background: #f0fff4;
+      border-left: 4px solid #38a169;
+      border-radius: 6px;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: #276749;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
     a {
       display: inline-block;
       padding: 10px 24px;
@@ -57,19 +101,18 @@
       border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
+      margin-top: 10px;
     }
     a:hover { background: #2b6cb0; }
-    h1 { font-size: 20px; color: #1a202c; }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Prediction Result</h1>
 
-    <div class="result-badge {{ 'pass' if result == 'WILL PASS' else 'fail' }}">
+    <div class="result-badge {{ 'pass' if result == 'PASS' else 'fail' }}">
       {{ result }}
     </div>
-
     <div class="confidence">Confidence: {{ confidence }}%</div>
 
     <table>
@@ -83,6 +126,26 @@
       <tr><td>G2 Grade</td><td>{{ form_data.G2 }}</td></tr>
       <tr><td>Health Status</td><td>{{ form_data.health }}</td></tr>
     </table>
+
+    {% if result == "PASS" %}
+    <div class="pass-message">
+      This student is predicted to pass. Keep maintaining good study habits,
+      attendance, and academic performance to ensure continued success.
+    </div>
+    {% endif %}
+
+    {% if suggestions %}
+    <div class="suggestions-title">Areas to Improve</div>
+    {% for s in suggestions %}
+    <div class="suggestion-card">
+      <div class="suggestion-field">{{ s.field }}</div>
+      <div class="suggestion-meta">
+        Current: {{ s.current }} &nbsp;→&nbsp; Target: {{ s.target }}
+      </div>
+      <div class="suggestion-advice">{{ s.advice }}</div>
+    </div>
+    {% endfor %}
+    {% endif %}
 
     <a href="/">Predict Another</a>
   </div>
