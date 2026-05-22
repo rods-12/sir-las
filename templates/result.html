@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediction Result</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+    }
+    .result-badge {
+      font-size: 48px;
+      font-weight: bold;
+      margin: 20px 0 10px;
+    }
+    .pass { color: #38a169; }
+    .fail { color: #e53e3e; }
+    .confidence {
+      font-size: 18px;
+      color: #718096;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    th, td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th { color: #4a5568; font-weight: bold; }
+    td { color: #2d3748; }
+    a {
+      display: inline-block;
+      padding: 10px 24px;
+      background: #3182ce;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover { background: #2b6cb0; }
+    h1 { font-size: 20px; color: #1a202c; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Prediction Result</h1>
+
+    <div class="result-badge {{ 'pass' if result == 'WILL PASS' else 'fail' }}">
+      {{ result }}
+    </div>
+
+    <div class="confidence">Confidence: {{ confidence }}%</div>
+
+    <table>
+      <tr><th>Input</th><th>Value</th></tr>
+      <tr><td>Study Time</td><td>{{ form_data.studytime }}</td></tr>
+      <tr><td>Past Failures</td><td>{{ form_data.failures }}</td></tr>
+      <tr><td>Absences</td><td>{{ form_data.absences }}</td></tr>
+      <tr><td>Higher Education</td><td>{{ "Yes" if form_data.higher == 1 else "No" }}</td></tr>
+      <tr><td>Internet at Home</td><td>{{ "Yes" if form_data.internet == 1 else "No" }}</td></tr>
+      <tr><td>G1 Grade</td><td>{{ form_data.G1 }}</td></tr>
+      <tr><td>G2 Grade</td><td>{{ form_data.G2 }}</td></tr>
+      <tr><td>Health Status</td><td>{{ form_data.health }}</td></tr>
+    </table>
+
+    <a href="/">Predict Another</a>
+  </div>
+</body>
+</html>
